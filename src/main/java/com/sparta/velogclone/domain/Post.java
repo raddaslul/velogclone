@@ -28,12 +28,6 @@ public class Post extends Timestamped {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "image_url", nullable = false)
-    private String imageUrl;
-
-    @Column(name = "like_cnt", nullable = false)
-    private int likeCnt;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -41,4 +35,10 @@ public class Post extends Timestamped {
     @OneToMany(mappedBy = "post", orphanRemoval = true)
     @OrderBy("id desc")
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
+    private List<Likes> likeses = new ArrayList<>();
+
+    @OneToOne(mappedBy = "post", orphanRemoval = true)
+    private File file;
 }
