@@ -43,4 +43,7 @@ public class User extends Timestamped {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     @OrderBy("id desc")
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Likes> likeses = new ArrayList<>();
 }
