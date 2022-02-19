@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface LikesRepository extends JpaRepository<Likes, Long> {
-    List<Likes> findAllByPostId(Long postId);
+    List<Likes> findAllByPostId(Long id);
 }

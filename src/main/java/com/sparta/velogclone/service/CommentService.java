@@ -38,11 +38,11 @@ public class CommentService {
     @Transactional
     public void writeComment(CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
         Post post = postRepository.findById(commentRequestDto.getPostId()).orElseThrow(
-                () -> new CommentNotFoundException("")
+                () -> new CommentNotFoundException("댓글이 존재하지 않습니다.")
         );
 
         User user = userRepository.findById(userDetails.getUser().getId()).orElseThrow(
-                () -> new LoginUserNotFoundException("")
+                () -> new LoginUserNotFoundException("로그인 한 유저가 아닙니다.")
         );
 
         commentRepository.save(commentRequestDto.toEntity(post, user));
@@ -54,7 +54,7 @@ public class CommentService {
                                            UserDetailsImpl userDetails) {
 
         Comment comment = commentRepository.findById(commentId).orElseThrow(
-                () -> new CommentNotFoundException("")
+                () -> new CommentNotFoundException("댓글이 존재하지 않습니다.")
         );
 
         if (!userDetails.getUser().getId().equals(comment.getUser().getId())) {
@@ -70,7 +70,7 @@ public class CommentService {
     public void deleteComment(Long commentId, UserDetailsImpl userDetails) {
 
         Comment comment = commentRepository.findById(commentId).orElseThrow(
-                () -> new CommentNotFoundException("")
+                () -> new CommentNotFoundException("댓글이 존재하지 않습니다.")
         );
 
         if (!userDetails.getUser().getId().equals(comment.getUser().getId())) {
