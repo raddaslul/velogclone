@@ -37,7 +37,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 3. Filter를 거치면서 validate되지 않고, authentication이 생성되지 않는다면 클라이언트는 기능 수행이 불가함.
         // 4. getAuthentication이 되었다면 이를 SecurityContextHolder에 저장해주어 인증상태를 유지하도록 해줌.
         // ==== UserDetailsImpl에 담기게 됨!!!
-        // 5.
         // 5. response 결과로 클라이언트가 요청한 부분을 처리해서 그 결과를 보내줌.
 
         // 에러 메세지 줄 때 상태 코드 구체적으로 정해서 줘야할듯!!!!!!! 그게 프론트한테 더 좋을듯
