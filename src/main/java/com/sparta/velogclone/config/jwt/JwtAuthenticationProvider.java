@@ -25,10 +25,10 @@ public class JwtAuthenticationProvider {
     private final UserDetailsImplService userDetailsImplService;
 
     // JWT 토큰 생성
-    public String createToken(String userPk, String name) {
-        Claims claims = Jwts.claims().setSubject(userPk); // plaload에  정보 저장
-        claims.put("userEmail", userPk); // 정보를 저장할 데이터 넣어주기
-        claims.put("username",name);
+    public String createToken(String userPk, String userEmail) {
+        Claims claims = Jwts.claims().setSubject(userPk); // payload에  정보 저장
+        claims.put("username", userPk); // 정보를 저장할 데이터 넣어주기
+        claims.put("userEmail",userEmail);
 
         Date now = new Date();
         return Jwts.builder()
@@ -42,7 +42,7 @@ public class JwtAuthenticationProvider {
 
     // 토큰에서 회원 정보 추출
     public String getUserEmail(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("email").toString();
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("userEmail").toString();
     } // 추출하면 username, email등 유저의 정보가 나오게 됨.
 
     // JWT 토큰에서 인증 정보 조회
