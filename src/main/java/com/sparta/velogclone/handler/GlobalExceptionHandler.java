@@ -37,10 +37,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorResponse("U005", e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
-//    @ExceptionHandler(PostNotFoundException.class)
-//    public ResponseEntity<ErrorResponse> handlePostNotFoundException(PostNotFoundException e) {
-//        return new ResponseEntity<>(new ErrorResponse("P001", e.getMessage()), HttpStatus.BAD_REQUEST);
-//    }
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePostNotFoundException(PostNotFoundException e) {
+        return new ResponseEntity<>(new ErrorResponse("P001", e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(CommentNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleCommentNotFoundException(CommentNotFoundException e) {
