@@ -16,14 +16,17 @@ public class PostResponseDto {
     private String title;
     private String content;
     private String postModifiedAt;
-    private int CommentCnt;
+    private int commentCnt;
     private int likeCnt;
     private String postUserName;
 
-    public PostResponseDto(Post post, int CommentCnt, int likeCnt) {
+    public PostResponseDto(Post post, int commentCnt, int likeCnt) {
         this.postId = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.postModifiedAt = post
+        this.postModifiedAt = post.getModifiedAt().toString();
+        this.commentCnt = commentCnt;
+        this.likeCnt = likeCnt;
+        this.postUserName = post.getUser().getUserName();
     }
 }
