@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
@@ -24,7 +26,8 @@ public class ImageFileService {
 
         UUID uuid = UUID.randomUUID();
         String convertedFileName = uuid + "." + extension;
-        String savePath = System.getProperty("user.dir") + "\\files";
+        //String savePath = System.getProperty("user.dir") + "\\files";
+        String savePath = "files";
         if (!new java.io.File(savePath).exists()) {
             try {
                 new java.io.File(savePath).mkdir();
@@ -32,13 +35,14 @@ public class ImageFileService {
                 e.getStackTrace();
             }
         }
-        String filePath = savePath + "\\" + convertedFileName;
-        multipartFile.transferTo(new File(filePath));
+        //String filePath = savePath + "\\" + convertedFileName;
+        Path filePath = Paths.get("/home/ubuntu/", savePath, "/" , convertedFileName);
+        multipartFile.transferTo(new File(String.valueOf(filePath)));
 
         ImageFileRequestDto imageFileRequestDto = new ImageFileRequestDto();
         imageFileRequestDto.setOriginalFileName(originalFileName);
         imageFileRequestDto.setConvertedFileName(convertedFileName);
-        imageFileRequestDto.setFilePath(filePath);
+        imageFileRequestDto.setFilePath(String.valueOf(filePath));
         imageFileRequestDto.setFileSize(multipartFile.getSize());
         return imageFileRepository.save(imageFileRequestDto.toEntity());
     }

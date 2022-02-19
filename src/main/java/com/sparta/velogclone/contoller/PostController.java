@@ -9,6 +9,7 @@ import com.sparta.velogclone.handler.ex.LoginUserNotFoundException;
 import com.sparta.velogclone.service.PostService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class PostController {
 
     private final PostService postService;
@@ -33,6 +35,7 @@ public class PostController {
             @RequestPart("post") PostRequestDto postRequestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
             ) throws IOException {
+        log.info("~~~ multipartFile : "+ multipartFile.getName());
         if(userDetails != null) {
             User user = userDetails.getUser();
             postService.savePost(multipartFile, postRequestDto, user);

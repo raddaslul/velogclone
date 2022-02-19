@@ -3,6 +3,7 @@ package com.sparta.velogclone.config.auth;
 import com.sparta.velogclone.domain.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,6 +12,7 @@ import java.util.Collection;
 
 //@RequiredArgsConstructor
 @Getter
+@Slf4j
 public class UserDetailsImpl implements UserDetails {
 
     private final User user;
