@@ -49,14 +49,4 @@ public class Post extends Timestamped {
         this.content = postRequestDto.getContent();
         this.user = user;
     }
-
-    public PostResponseDto toResponseDto() {
-        return PostResponseDto.builder()
-                .postId(this.id)
-                .imageUrl(this.imageFile.getFilePath())
-                .title(this.title)
-                .content(this.content)
-                .postUserName(this.user.getUserName())
-                .build();
-    }
 }

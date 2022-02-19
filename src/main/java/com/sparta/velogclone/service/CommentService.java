@@ -57,8 +57,8 @@ public class CommentService {
                 () -> new CommentNotFoundException("댓글이 존재하지 않습니다.")
         );
 
-        if (!userDetails.getUser().equals(comment.getUser())) {
-            throw new IllegalCommentUpdateUserException("본인 댓글이 아니면 수정할 수 없습니다.");
+        if (!userDetails.getUser().getId().equals(comment.getUser().getId())) {
+            throw new IllegalCommentUpdateUserException("");
         }
 
         comment.updateComment(commentRequestDto);
@@ -73,8 +73,8 @@ public class CommentService {
                 () -> new CommentNotFoundException("댓글이 존재하지 않습니다.")
         );
 
-        if (!userDetails.getUser().equals(comment.getUser())) {
-            throw new IllegalCommentDeleteUserException("본인 댓글이 아니면 삭제할 수 없습니다.");
+        if (!userDetails.getUser().getId().equals(comment.getUser().getId())) {
+            throw new IllegalCommentDeleteUserException("");
         }
 
         commentRepository.deleteById(commentId);

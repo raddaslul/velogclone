@@ -1,13 +1,11 @@
 package com.sparta.velogclone.dto.responsedto;
 
 import com.sparta.velogclone.domain.Post;
-import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Data
-@Builder
 @Getter
 @Setter
 public class PostResponseDto {
@@ -26,6 +24,7 @@ public class PostResponseDto {
             int likeCnt,
             String postModifiedAt) {
         this.postId = post.getId();
+        this.imageUrl = post.getImageFile().getFilePath();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.postModifiedAt = postModifiedAt;
