@@ -26,7 +26,7 @@ public class LikesService {
     public ResponseEntity<?> addLikes(Long postId) {
 
         Post post = postRepository.findById(postId).orElseThrow(
-                () -> new NullPointerException("")
+                () -> new NullPointerException("게시글이 존재하지 않습니다.")
         );
 
         Likes likes = Likes.builder()

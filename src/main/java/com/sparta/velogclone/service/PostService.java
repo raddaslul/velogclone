@@ -5,6 +5,7 @@ import com.sparta.velogclone.dto.requestdto.PostRequestDto;
 import com.sparta.velogclone.dto.responsedto.CMResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostResponseDto;
 import com.sparta.velogclone.repository.CommentRepository;
+import com.sparta.velogclone.repository.LikesRepository;
 import com.sparta.velogclone.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +45,7 @@ public class PostService {
         List<Post> posts = postRepository.findAllByOOrderByModifiedAtDesc();
 
         for (Post post : posts) {
-            List<Comment> comments = commentRepository.findAllByPostId(post.getId());
+            List<Comment> comments = commentRepository.findAllByPostIdOrderByModifiedAtDesc(post.getId());
             int commentCnt = comments.size();
             List<Likes> likes = likesRepository.findAllByPostId(post.getId());
             int likeCnt = likes.size();
