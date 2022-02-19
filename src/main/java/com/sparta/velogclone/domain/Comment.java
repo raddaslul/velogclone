@@ -1,5 +1,6 @@
 package com.sparta.velogclone.domain;
 
+import com.sparta.velogclone.dto.requestdto.CommentRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,4 +30,8 @@ public class Comment extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public void updateComment(CommentRequestDto commentRequestDto) {
+        this.comment = commentRequestDto.getComment();
+    }
 }
