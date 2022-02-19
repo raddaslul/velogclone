@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Getter
 public class UserDetailsImpl implements UserDetails {
 
@@ -24,6 +24,10 @@ public class UserDetailsImpl implements UserDetails {
         });
 
         return authorities;
+    }
+
+    public UserDetailsImpl(User user) {
+        this.user = user;
     }
 
     @Override

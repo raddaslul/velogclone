@@ -68,10 +68,10 @@ public class UserService {
 
 
         // 토큰 정보 생성
-        String token = jwtAuthenticationProvider.createToken(userEntity.getUserEmail(), userEntity.getUserName());
+        String token = jwtAuthenticationProvider.createToken(userEntity.getUserName(), userEntity.getUserEmail());
         //response.setHeader("X-AUTH-TOKEN", token);
 
-        Cookie cookie = new Cookie("Authorization", token);
+        Cookie cookie = new Cookie("X-AUTH-TOKEN", token);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
