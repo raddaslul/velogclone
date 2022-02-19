@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 @RestController
 public class CommentController {
 
@@ -19,21 +21,39 @@ public class CommentController {
     }
 
     @PostMapping("/comment")
-    public ResponseEntity<?> wirteComment(@RequestBody CommentRequestDto commentRequestDto,
-                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return commentService.writeComment(commentRequestDto, userDetails);
+    public HashMap<String, Object> writeComment(@RequestBody CommentRequestDto commentRequestDto,
+                                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        HashMap<String, Object> result = new HashMap<>();
+
+        commentService.writeComment(commentRequestDto, userDetails);
+        result.put("result", true);
+
+        return result;
     }
 
     @PutMapping("/comment/{commentId}")
-    public ResponseEntity<?> changeComment(@PathVariable Long commentId,
+    public HashMap<String, Object> changeComment(@PathVariable Long commentId,
                                            @RequestBody CommentRequestDto commentRequestDto,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return commentService.changeComment(commentId, commentRequestDto, userDetails);
+
+        HashMap<String, Object> result = new HashMap<>();
+
+        commentService.changeComment(commentId, commentRequestDto, userDetails);
+        result.put("result", true);
+
+        return result;
     }
 
     @DeleteMapping("comment/{commentId}")
-    public ResponseEntity<?> deleteComment(@PathVariable Long commentId,
+    public HashMap<String, Object> deleteComment(@PathVariable Long commentId,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return commentService.deleteComment(commentId, userDetails);
+
+        HashMap<String, Object> result = new HashMap<>();
+
+        commentService.deleteComment(commentId, userDetails);
+        result.put("result", true);
+
+        return result;
     }
 }

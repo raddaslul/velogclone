@@ -36,7 +36,7 @@ public class CommentService {
     }
 
     @Transactional
-    public ResponseEntity<?> writeComment(CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
+    public void writeComment(CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
         Post post = postRepository.findById(commentRequestDto.getPostId()).orElseThrow(
                 () -> new CommentNotFoundException("")
         );
@@ -46,12 +46,10 @@ public class CommentService {
         );
 
         commentRepository.save(commentRequestDto.toEntity(post, user));
-
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
     @Transactional
-    public ResponseEntity<?> changeComment(Long commentId,
+    public void changeComment(Long commentId,
                                            CommentRequestDto commentRequestDto,
                                            UserDetailsImpl userDetails) {
 
@@ -66,12 +64,10 @@ public class CommentService {
         comment.updateComment(commentRequestDto);
 
         commentRepository.save(comment);
-
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
     @Transactional
-    public ResponseEntity<?> deleteComment(Long commentId, UserDetailsImpl userDetails) {
+    public void deleteComment(Long commentId, UserDetailsImpl userDetails) {
 
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new CommentNotFoundException("")
@@ -82,7 +78,5 @@ public class CommentService {
         }
 
         commentRepository.deleteById(commentId);
-
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 }
