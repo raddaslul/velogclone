@@ -6,6 +6,7 @@ import com.sparta.velogclone.dto.requestdto.PostRequestDto;
 import com.sparta.velogclone.dto.responsedto.PostDetailResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostResponseDto;
 import com.sparta.velogclone.handler.ex.LoginUserNotFoundException;
+import com.sparta.velogclone.handler.ex.PostNotFoundException;
 import com.sparta.velogclone.service.PostService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -57,13 +58,13 @@ public class PostController {
     }
 
     // 게시글 삭제
-//    @DeleteMapping("/api/posting/{postId}")
-//    public HashMap<String, Object> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        if(userDetails.getUser().getId().equals(postId)) {
-//            postService.deletePost(postId, userDetails);
-//            HashMap<String, Object> result = new HashMap<>();
-//            result.put("result", "true");
-//            return result;
-//        } else throw new LoginUserNotFoundException("로그인한 유저 정보가 없습니다.");
-//    }
+    @DeleteMapping("/api/posting/{postId}")
+    public HashMap<String, Object> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if(userDetails.getUser().getId().equals(postId)) {
+            postService.deletePost(postId, userDetails);
+            HashMap<String, Object> result = new HashMap<>();
+            result.put("result", "true");
+            return result;
+        } else throw new PostNotFoundException("해당 게시글이 존재하지 않습니다.");
+    }
 }

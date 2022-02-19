@@ -1,5 +1,6 @@
 package com.sparta.velogclone.service;
 
+import com.sparta.velogclone.config.auth.UserDetailsImpl;
 import com.sparta.velogclone.domain.*;
 import com.sparta.velogclone.dto.requestdto.PostRequestDto;
 import com.sparta.velogclone.dto.responsedto.CommentResponseDto;
@@ -92,5 +93,6 @@ public class PostService {
     }
 
     // 게시글 삭제
-
+    public void deletePost(Long postId, UserDetailsImpl userDetails) {
+    }
 }
