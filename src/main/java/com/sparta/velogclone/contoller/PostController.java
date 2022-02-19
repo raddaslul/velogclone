@@ -9,8 +9,8 @@ import com.sparta.velogclone.handler.ex.LoginUserNotFoundException;
 import com.sparta.velogclone.service.PostService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Transactional
 public class PostController {
 
     private final PostService postService;
@@ -32,24 +33,37 @@ public class PostController {
             @RequestPart("post") PostRequestDto postRequestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
             ) throws IOException {
-        User user = userDetails.getUser();
         if(userDetails != null) {
-            HashMap<String, Object> result = new HashMap<>();
+            User user = userDetails.getUser();
             postService.savePost(multipartFile, postRequestDto, user);
+            HashMap<String, Object> result = new HashMap<>();
             result.put("result", "true");
             return result;
         } else throw new LoginUserNotFoundException("로그인한 유저 정보가 없습니다.");
     }
 
     // 게시글 전체 조회
+    @Transactional(readOnly = true)
     @GetMapping("/api/posting")
     public List<PostResponseDto> viewPost() {
         return postService.viewPost();
     }
 
     // 게시글 상세 조회
+    @Transactional(readOnly = true)
     @GetMapping("/api/posting/{postId}")
     public PostDetailResponseDto viewPostDetail(@PathVariable Long postId) {
         return postService.viewPostDetail(postId);
     }
+
+    // 게시글 삭제
+//    @DeleteMapping("/api/posting/{postId}")
+//    public HashMap<String, Object> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        if(userDetails.getUser().getId().equals(postId)) {
+//            postService.deletePost(postId, userDetails);
+//            HashMap<String, Object> result = new HashMap<>();
+//            result.put("result", "true");
+//            return result;
+//        } else throw new LoginUserNotFoundException("로그인한 유저 정보가 없습니다.");
+//    }
 }

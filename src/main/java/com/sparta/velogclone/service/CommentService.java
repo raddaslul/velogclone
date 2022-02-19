@@ -57,7 +57,7 @@ public class CommentService {
                 () -> new CommentNotFoundException("")
         );
 
-        if (!userDetails.getUser().equals(comment.getUser())) {
+        if (!userDetails.getUser().getId().equals(comment.getUser().getId())) {
             throw new IllegalCommentUpdateUserException("");
         }
 
@@ -73,7 +73,7 @@ public class CommentService {
                 () -> new CommentNotFoundException("")
         );
 
-        if (!userDetails.getUser().equals(comment.getUser())) {
+        if (!userDetails.getUser().getId().equals(comment.getUser().getId())) {
             throw new IllegalCommentDeleteUserException("");
         }
 

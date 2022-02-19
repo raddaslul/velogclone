@@ -4,7 +4,6 @@ import com.sparta.velogclone.config.auth.UserDetailsImpl;
 import com.sparta.velogclone.dto.requestdto.CommentRequestDto;
 import com.sparta.velogclone.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +19,7 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/comment")
+    @PostMapping("/api/comment")
     public HashMap<String, Object> writeComment(@RequestBody CommentRequestDto commentRequestDto,
                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
@@ -32,7 +31,7 @@ public class CommentController {
         return result;
     }
 
-    @PutMapping("/comment/{commentId}")
+    @PutMapping("/api/comment/{commentId}")
     public HashMap<String, Object> changeComment(@PathVariable Long commentId,
                                            @RequestBody CommentRequestDto commentRequestDto,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -45,7 +44,7 @@ public class CommentController {
         return result;
     }
 
-    @DeleteMapping("comment/{commentId}")
+    @DeleteMapping("api/comment/{commentId}")
     public HashMap<String, Object> deleteComment(@PathVariable Long commentId,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
