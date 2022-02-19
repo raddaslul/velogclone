@@ -1,5 +1,7 @@
 package com.sparta.velogclone.domain;
 
+import com.sparta.velogclone.dto.requestdto.PostRequestDto;
+import com.sparta.velogclone.dto.responsedto.PostResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,5 +42,21 @@ public class Post extends Timestamped {
     private List<Likes> likeses = new ArrayList<>();
 
     @OneToOne(mappedBy = "post", orphanRemoval = true)
-    private File file;
+    private ImageFile imageFile;
+
+    public Post(PostRequestDto postRequestDto, User user) {
+        this.title = postRequestDto.getTitle();
+        this.content = postRequestDto.getContent();
+        this.user = user;
+    }
+
+    public PostResponseDto toResponseDto() {
+        return PostResponseDto.builder()
+                .postId(this.id)
+                .imageUrl(this.imageFile.getFilePath())
+                .title(this.title)
+                .content(this.content)
+                .postUserName(this.user.getUserName())
+                .build();
+    }
 }

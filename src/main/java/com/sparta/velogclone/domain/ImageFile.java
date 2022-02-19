@@ -1,9 +1,6 @@
 package com.sparta.velogclone.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "file")
-public class File extends Timestamped {
+public class ImageFile extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -29,9 +26,13 @@ public class File extends Timestamped {
     private String filePath;
 
     @Column(name = "file_size", nullable = false)
-    private String fileSize;
+    private Long fileSize;
 
     @OneToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public void addPost(Post post) {
+        this.post = post;
+    }
 }

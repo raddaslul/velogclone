@@ -7,10 +7,9 @@ import java.time.LocalDateTime;
 
 @Data
 public class CommentResponseDto {
-    private Long id;
-    private String comment;
-    private String commentModifiedAt;
-    private Long postId;
-    private Long userId;
-    private String userName;
+    private final Long commentId;
+    private final String comment;
+    private final String commentModifiedAt;
+    private final Long commentUserId;
+    private final String commentUserName;
 }

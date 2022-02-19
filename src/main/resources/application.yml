@@ -1,4 +1,4 @@
-spring.h2.console.enabled: true
+#spring.h2.console.enabled: true
 spring:
   servlet:
     multipart:
@@ -13,6 +13,12 @@ spring:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
     username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true # h2 config
   jpa:
     show-sql: true
     hibernate:
