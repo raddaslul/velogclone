@@ -23,11 +23,11 @@ public class Post extends Timestamped {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = true)
     private String title;
 
     @Lob
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = true)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

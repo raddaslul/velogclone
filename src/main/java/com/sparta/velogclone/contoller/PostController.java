@@ -9,6 +9,7 @@ import com.sparta.velogclone.handler.ex.LoginUserNotFoundException;
 import com.sparta.velogclone.service.PostService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -21,18 +22,21 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
+@RequestMapping("/api")
 public class PostController {
 
     private final PostService postService;
 
     // 게시글 작성
-    @PostMapping("/api/posting")
+    @PostMapping("/posting")
     @ApiOperation(value = "게시물 등록", notes = "게시물에 이미지 파일을 첨부해서 등록한다")
     public HashMap<String, Object> savePost(
             @RequestPart("imageFile") MultipartFile multipartFile,
             @RequestPart("post") PostRequestDto postRequestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
             ) throws IOException {
+        log.info("~~~ multipartFile : "+ multipartFile.getName());
         if(userDetails != null) {
             User user = userDetails.getUser();
             postService.savePost(multipartFile, postRequestDto, user);
@@ -44,14 +48,14 @@ public class PostController {
 
     // 게시글 전체 조회
     @Transactional(readOnly = true)
-    @GetMapping("/api/posting")
+    @GetMapping("/posting")
     public List<PostResponseDto> viewPost() {
         return postService.viewPost();
     }
 
     // 게시글 상세 조회
     @Transactional(readOnly = true)
-    @GetMapping("/api/posting/{postId}")
+    @GetMapping("/posting/{postId}")
     public PostDetailResponseDto viewPostDetail(@PathVariable Long postId) {
         return postService.viewPostDetail(postId);
     }
