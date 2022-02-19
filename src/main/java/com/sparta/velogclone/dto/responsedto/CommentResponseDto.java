@@ -2,16 +2,20 @@ package com.sparta.velogclone.dto.responsedto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
+@Getter
+@Setter
 public class CommentResponseDto {
-    private final Long commentId;
-    private final String comment;
-    private final String commentModifiedAt;
-    private final Long commentUserId;
-    private final String commentUserName;
+    private Long commentId;
+    private String comment;
+    private String commentModifiedAt;
+    private Long commentUserId;
+    private String commentUserName;
 }
