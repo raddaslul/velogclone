@@ -20,11 +20,15 @@ public class PostResponseDto {
     private int likeCnt;
     private String postUserName;
 
-    public PostResponseDto(Post post, int commentCnt, int likeCnt) {
+    public PostResponseDto(
+            Post post,
+            int commentCnt,
+            int likeCnt,
+            String postModifiedAt) {
         this.postId = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.postModifiedAt = post.getModifiedAt().toString();
+        this.postModifiedAt = postModifiedAt;
         this.commentCnt = commentCnt;
         this.likeCnt = likeCnt;
         this.postUserName = post.getUser().getUserName();
