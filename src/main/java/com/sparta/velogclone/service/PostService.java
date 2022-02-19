@@ -50,7 +50,7 @@ public class PostService {
         List<Post> posts = postRepository.findAllByOrderByModifiedAtDesc();
 
         for (Post post : posts) {
-            List<Comment> comments = commentRepository.findAllByPostId(post.getId());
+            List<Comment> comments = commentRepository.findAllByPostIdOrderByModifiedAtDesc(post.getId());
             int commentCnt = comments.size();
 
             List<Likes> likes = likesRepository.findAllByPostId(post.getId());
@@ -72,10 +72,19 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostDetailResponseDto viewPostDetail(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(IllegalAccessError::new);
-        List<CommentResponseDto> commentList = commentRepository.findAllByPostId(postId).stream()
+        List<CommentResponseDto> commentList = commentRepository.findAllByPostIdOrderByModifiedAtDesc(postId).stream()
                 .map(comment -> comment.toResponseDto()).collect(Collectors.toList());
 
-        List<Comment> comments = commentRepository.findAllByPostId(post.getId());
+        List<Comment> comments = commentRepository.findAllByPostIdOrderByModifiedAtDesc(post.getId());
+        for (CommentResponseDto commentResponseDto : commentList) {
+            String commentModifiedAt = commentResponseDto.getCommentModifiedAt();
+            String year = commentModifiedAt.substring(0,4) + "년";
+            String month = commentModifiedAt.substring(5,7) + "월";
+            String day = commentModifiedAt.substring(8) + "일";
+            String time = commentModifiedAt.substring(11,19);
+            commentModifiedAt = year + month + day + time;
+            commentResponseDto.setCommentModifiedAt(commentModifiedAt);
+        }
         int commentCnt = comments.size();
 
         List<Likes> likes = likesRepository.findAllByPostId(post.getId());

@@ -1,6 +1,7 @@
 package com.sparta.velogclone.config.jwt;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
@@ -21,7 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = jwtAuthenticationProvider.resolveToken(request);
         //System.out.println("token = " + token);
-
+        log.info("~~~token : " +token);
         if (token != null && jwtAuthenticationProvider.validateToken(token)){
             Authentication authentication = jwtAuthenticationProvider.getAuthentication(token);
 
