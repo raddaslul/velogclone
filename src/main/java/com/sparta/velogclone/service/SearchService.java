@@ -33,7 +33,7 @@ public class SearchService {
         }
 
         for (Post post : posts) {
-            postResponseDtoList.add(post.toResponse());
+            postResponseDtoList.add(post.toResponseDto());
         }
 
         return postResponseDtoList;

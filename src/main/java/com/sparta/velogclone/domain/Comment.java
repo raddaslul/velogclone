@@ -1,6 +1,7 @@
 package com.sparta.velogclone.domain;
 
 import com.sparta.velogclone.dto.requestdto.CommentRequestDto;
+import com.sparta.velogclone.dto.responsedto.CommentResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,5 +34,15 @@ public class Comment extends Timestamped {
 
     public void updateComment(CommentRequestDto commentRequestDto) {
         this.comment = commentRequestDto.getComment();
+    }
+
+    public CommentResponseDto toResponseDto() {
+        return CommentResponseDto.builder()
+                .commentId(this.id)
+                .comment(this.comment)
+                .commentModifiedAt(this.getModifiedAt().toString())
+                .commentUserId(this.user.getId())
+                .commentUserName(this.user.getUserName())
+                .build();
     }
 }

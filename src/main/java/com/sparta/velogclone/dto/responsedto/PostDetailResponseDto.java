@@ -1,5 +1,6 @@
 package com.sparta.velogclone.dto.responsedto;
 
+import com.sparta.velogclone.domain.Post;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -13,13 +14,30 @@ import java.util.List;
 @Getter
 @Setter
 public class PostDetailResponseDto {
-    private final Long postId;
-    private final String imageUrl;
-    private final String title;
-    private final String content;
-    private final String postModifiedAt;
-    private final int CommentCnt;
-    private final int likeCnt;
-    private final String postUserName;
-    private final List<CommentResponseDto> commentList;
+    private Long postId;
+    private String imageUrl;
+    private String title;
+    private String content;
+    private String postModifiedAt;
+    private int commentCnt;
+    private int likeCnt;
+    private String postUserName;
+    private List<CommentResponseDto> commentList;
+
+    public PostDetailResponseDto (
+            Post post,
+            int commentCnt,
+            int likeCnt,
+            String postModifiedAt,
+            List<CommentResponseDto> commentList) {
+        this.postId = post.getId();
+        this.imageUrl = post.getImageFile().getFilePath();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.postModifiedAt = postModifiedAt;
+        this.commentCnt = commentCnt;
+        this.likeCnt = likeCnt;
+        this.postUserName = post.getUser().getUserName();
+        this.commentList = commentList;
+    }
 }
