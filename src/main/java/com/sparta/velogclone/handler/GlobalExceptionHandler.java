@@ -37,11 +37,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorResponse("U005", e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(IllegalLoginUserNotEqualException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalLoginUserNotEqualException(IllegalLoginUserNotEqualException e) {
-        return new ResponseEntity<>(new ErrorResponse("U006", e.getMessage()), HttpStatus.UNAUTHORIZED);
-    }
-
     @ExceptionHandler(PostNotFoundException.class)
     public ResponseEntity<ErrorResponse> handlePostNotFoundException(PostNotFoundException e) {
         return new ResponseEntity<>(new ErrorResponse("P001", e.getMessage()), HttpStatus.BAD_REQUEST);
