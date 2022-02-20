@@ -7,6 +7,7 @@ import com.sparta.velogclone.dto.responsedto.CommentResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostDetailResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostResponseDto;
 import com.sparta.velogclone.handler.ex.LoginUserNotFoundException;
+import com.sparta.velogclone.handler.ex.PostNotFoundException;
 import com.sparta.velogclone.repository.CommentRepository;
 import com.sparta.velogclone.repository.LikesRepository;
 import com.sparta.velogclone.repository.PostRepository;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -101,7 +103,17 @@ public class PostService {
                 post, commentCnt, likeCnt, postModifiedAt, commentList);
     }
 
-    // 게시글 삭제
-    public void deletePost(Long postId, UserDetailsImpl userDetails) {
+    // 게시글 수정
+    public void updatePost(Long postId) {
+
     }
+
+    // 게시글 삭제
+    public void deletePost(Long postId) {
+        Optional<Post> post = postRepository.findById(postId);
+        if(post.isPresent()) {
+            postRepository.deleteById(postId);
+        } else throw new PostNotFoundException("해당 게시글이 존재하지 않습니다.");
+    }
+
 }
