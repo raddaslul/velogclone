@@ -1,5 +1,6 @@
 package com.sparta.velogclone.domain;
 
+import com.sparta.velogclone.dto.requestdto.ImageFileRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,7 +10,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "file")
 public class ImageFile extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,5 +34,12 @@ public class ImageFile extends Timestamped {
 
     public void addPost(Post post) {
         this.post = post;
+    }
+
+    public void updateImageFile(ImageFileRequestDto imageFileRequestDto) {
+        this.originalFileName = imageFileRequestDto.getOriginalFileName();
+        this.convertedFileName = imageFileRequestDto.getConvertedFileName();
+        this.filePath = imageFileRequestDto.getFilePath();
+        this.fileSize = imageFileRequestDto.getFileSize();
     }
 }
