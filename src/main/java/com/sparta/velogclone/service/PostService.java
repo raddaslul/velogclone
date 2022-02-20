@@ -1,19 +1,19 @@
 package com.sparta.velogclone.service;
 
-import com.sparta.velogclone.config.auth.UserDetailsImpl;
 import com.sparta.velogclone.domain.*;
 import com.sparta.velogclone.dto.requestdto.PostRequestDto;
 import com.sparta.velogclone.dto.responsedto.CommentResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostDetailResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostResponseDto;
-import com.sparta.velogclone.handler.ex.LoginUserNotFoundException;
+import com.sparta.velogclone.handler.ex.IllegalPostDeleteUserException;
+import com.sparta.velogclone.handler.ex.IllegalPostUpdateUserException;
+import com.sparta.velogclone.handler.ex.PostNotFoundException;
 import com.sparta.velogclone.repository.CommentRepository;
 import com.sparta.velogclone.repository.LikesRepository;
 import com.sparta.velogclone.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class PostService {
     private final ImageFileService imageFileService;
 
     // 게시글 작성
-    public void savePost(
+    public ImageFile savePost(
             MultipartFile multipartFile, PostRequestDto postRequestDto, User user) throws IOException {
             Post post = new Post(postRequestDto, user);
             postRepository.save(post);
@@ -41,6 +41,7 @@ public class PostService {
 
             postRequestDto.setImageFile(imageFile);
             imageFile.addPost(post);
+            return imageFile;
     }
 
     // 게시글 전체 조회
@@ -101,7 +102,28 @@ public class PostService {
                 post, commentCnt, likeCnt, postModifiedAt, commentList);
     }
 
+    // 게시글 수정
+    public void updatePost(
+            Long postId, User user,
+            MultipartFile multipartFile,
+            PostRequestDto postRequestDto
+        ) throws IOException {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException("해당 게시글이 존재하지 않습니다."));
+        if(user.getId().equals(post.getUser().getId())) {
+            post.updatePost(postRequestDto);
+            ImageFile imageFile = imageFileService.saveFile(multipartFile);
+            postRequestDto.setImageFile(imageFile);
+            imageFile.addPost(post);
+        } else throw new IllegalPostUpdateUserException("사용자가 작성한 게시글이 아닙니다.");
+    }
+
     // 게시글 삭제
-    public void deletePost(Long postId, UserDetailsImpl userDetails) {
+    public void deletePost(Long postId, User user) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException("해당 게시글이 존재하지 않습니다."));
+        if(user.getId().equals(post.getUser().getId())) {
+            postRepository.deleteById(postId);
+        } else throw new IllegalPostDeleteUserException("사용자가 작성한 게시글이 아닙니다.");
     }
 }

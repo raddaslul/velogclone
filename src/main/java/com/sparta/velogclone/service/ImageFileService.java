@@ -26,8 +26,8 @@ public class ImageFileService {
 
         UUID uuid = UUID.randomUUID();
         String convertedFileName = uuid + "." + extension;
-        //String savePath = System.getProperty("user.dir") + "\\files";
-        String savePath = "files";
+        String savePath = System.getProperty("user.dir") + "\\files";
+//        String savePath = "files";
         if (!new java.io.File(savePath).exists()) {
             try {
                 new java.io.File(savePath).mkdir();
@@ -35,8 +35,8 @@ public class ImageFileService {
                 e.getStackTrace();
             }
         }
-        //String filePath = savePath + "\\" + convertedFileName;
-        Path filePath = Paths.get("/home/ubuntu/", savePath, "/" , convertedFileName);
+        String filePath = savePath + "\\" + convertedFileName;
+//        Path filePath = Paths.get("/home/ubuntu/", savePath, "/" , convertedFileName);
         multipartFile.transferTo(new File(String.valueOf(filePath)));
 
         ImageFileRequestDto imageFileRequestDto = new ImageFileRequestDto();
