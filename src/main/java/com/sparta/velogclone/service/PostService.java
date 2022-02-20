@@ -6,6 +6,7 @@ import com.sparta.velogclone.dto.requestdto.PostRequestDto;
 import com.sparta.velogclone.dto.responsedto.CommentResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostDetailResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostResponseDto;
+import com.sparta.velogclone.handler.ex.IllegalPostDeleteUserException;
 import com.sparta.velogclone.handler.ex.LoginUserNotFoundException;
 import com.sparta.velogclone.handler.ex.PostNotFoundException;
 import com.sparta.velogclone.repository.CommentRepository;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -109,11 +111,14 @@ public class PostService {
     }
 
     // 게시글 삭제
-    public void deletePost(Long postId) {
-        Optional<Post> post = postRepository.findById(postId);
-        if(post.isPresent()) {
+    public void deletePost(Long postId, User user) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException("해당 게시글이 존재하지 않습니다."));
+        if(user.getId().equals(post.getUser().getId())) {
             postRepository.deleteById(postId);
-        } else throw new PostNotFoundException("해당 게시글이 존재하지 않습니다.");
+        } else throw new IllegalPostDeleteUserException("사용자가 작성한 게시글이 아닙니다.");
+
+
     }
 
 }

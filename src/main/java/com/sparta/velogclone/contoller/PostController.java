@@ -1,6 +1,7 @@
 package com.sparta.velogclone.contoller;
 
 import com.sparta.velogclone.config.auth.UserDetailsImpl;
+import com.sparta.velogclone.domain.Post;
 import com.sparta.velogclone.domain.User;
 import com.sparta.velogclone.dto.requestdto.PostRequestDto;
 import com.sparta.velogclone.dto.responsedto.PostDetailResponseDto;
@@ -8,6 +9,8 @@ import com.sparta.velogclone.dto.responsedto.PostResponseDto;
 import com.sparta.velogclone.handler.ex.IllegalPostDeleteUserException;
 import com.sparta.velogclone.handler.ex.IllegalPostUpdateUserException;
 import com.sparta.velogclone.handler.ex.LoginUserNotFoundException;
+import com.sparta.velogclone.handler.ex.PostNotFoundException;
+import com.sparta.velogclone.repository.PostRepository;
 import com.sparta.velogclone.service.PostService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +32,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final PostRepository postRepository;
 
     // 게시글 작성
     @PostMapping("/posting")
@@ -64,7 +68,11 @@ public class PostController {
 
     // 게시글 수정
     @PutMapping("/api/posting/{postId}")
-    public HashMap<String, Object> updatePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public HashMap<String, Object> updatePost(
+            @PathVariable Long postId,
+            @RequestPart("imageFile") MultipartFile multipartFile,
+            @RequestPart("post") PostRequestDto postRequestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if(userDetails != null) {
             if(userDetails.getUser().getId().equals(postId)) {
                 postService.updatePost(postId);
@@ -80,12 +88,11 @@ public class PostController {
     @DeleteMapping("/api/posting/{postId}")
     public HashMap<String, Object> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if(userDetails != null) {
-            if(userDetails.getUser().getId().equals(postId)) {
-                postService.deletePost(postId);
-                HashMap<String, Object> result = new HashMap<>();
-                result.put("result", "true");
-                return result;
-            } else throw new IllegalPostDeleteUserException("사용자가 작성한 게시글이 아닙니다.");
+            User user = userDetails.getUser();
+            postService.deletePost(postId, user);
+            HashMap<String, Object> result = new HashMap<>();
+            result.put("result", "true");
+            return result;
         } else throw new LoginUserNotFoundException("로그인한 유저 정보가 없습니다.");
     }
 }
