@@ -33,7 +33,7 @@ public class PostController {
     // 게시글 작성
     @PostMapping("/api/posting")
     @ApiOperation(value = "게시물 등록", notes = "게시물에 이미지 파일을 첨부해서 등록한다")
-    public Resource savePost(
+    public String savePost(
             @RequestPart("imageFile") MultipartFile multipartFile,
             @RequestPart("post") PostRequestDto postRequestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
@@ -42,7 +42,8 @@ public class PostController {
             User user = userDetails.getUser();
             ImageFile imageFile = postService.savePost(multipartFile, postRequestDto, user);
             String filePath = imageFile.getFilePath();
-            return new UrlResource(filePath);
+            return filePath;
+            //return new UrlResource(filePath);
         } else throw new LoginUserNotFoundException("로그인한 유저 정보가 없습니다.");
     }
 
