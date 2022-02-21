@@ -1,8 +1,8 @@
 cloud:
   aws:
     credentials:
-      accessKey: AKIAUVMXKBVKWM3A6V66
-      secretKey: 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
+      accessKey:
+      secretKey:
     s3:
       bucket: raddaslul
     region:
