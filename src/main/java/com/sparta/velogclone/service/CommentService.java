@@ -13,8 +13,6 @@ import com.sparta.velogclone.repository.CommentRepository;
 import com.sparta.velogclone.repository.PostRepository;
 import com.sparta.velogclone.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -58,7 +56,7 @@ public class CommentService {
         );
 
         if (!userDetails.getUser().getId().equals(comment.getUser().getId())) {
-            throw new IllegalCommentUpdateUserException("");
+            throw new IllegalCommentUpdateUserException("본인이 작성한 댓글만 수정할 수 있습니다.");
         }
 
         comment.updateComment(commentRequestDto);
@@ -74,7 +72,7 @@ public class CommentService {
         );
 
         if (!userDetails.getUser().getId().equals(comment.getUser().getId())) {
-            throw new IllegalCommentDeleteUserException("");
+            throw new IllegalCommentDeleteUserException("본인이 작성한 댓글만 삭제할 수 있습니다.");
         }
 
         commentRepository.deleteById(commentId);
