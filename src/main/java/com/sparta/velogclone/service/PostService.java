@@ -11,6 +11,7 @@ import com.sparta.velogclone.handler.ex.PostNotFoundException;
 import com.sparta.velogclone.repository.CommentRepository;
 import com.sparta.velogclone.repository.LikesRepository;
 import com.sparta.velogclone.repository.PostRepository;
+import com.sparta.velogclone.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,9 @@ public class PostService {
     private final CommentRepository commentRepository;
     private final LikesRepository likesRepository;
     private final ImageFileService imageFileService;
+
+    private final S3Uploader s3Uploader;
+    private final String imageDirName = "image";
 
     // 게시글 작성
     public ImageFile savePost(
@@ -111,6 +115,8 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("해당 게시글이 존재하지 않습니다."));
         if(user.getId().equals(post.getUser().getId())) {
+            String deleteFileURL = imageDirName + "/" + post.getImageFile().getConvertedFileName();
+            s3Uploader.deleteFile(deleteFileURL);
             post.updatePost(postRequestDto);
             ImageFile imageFile = imageFileService.saveFile(multipartFile);
             postRequestDto.setImageFile(imageFile);
@@ -123,6 +129,8 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("해당 게시글이 존재하지 않습니다."));
         if(user.getId().equals(post.getUser().getId())) {
+            String deleteFileURL = imageDirName + "/" + post.getImageFile().getConvertedFileName();
+            s3Uploader.deleteFile(deleteFileURL);
             postRepository.deleteById(postId);
         } else throw new IllegalPostDeleteUserException("사용자가 작성한 게시글이 아닙니다.");
     }
