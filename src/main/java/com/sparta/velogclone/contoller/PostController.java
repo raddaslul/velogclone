@@ -42,7 +42,8 @@ public class PostController {
             User user = userDetails.getUser();
             ImageFile imageFile = postService.savePost(multipartFile, postRequestDto, user);
             String filePath = imageFile.getFilePath();
-            return "![image](" + filePath + ")";
+            return filePath;
+            //return new UrlResource(filePath);
         } else throw new LoginUserNotFoundException("로그인한 유저 정보가 없습니다.");
     }
 
