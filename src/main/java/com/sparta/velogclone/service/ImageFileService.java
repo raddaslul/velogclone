@@ -22,7 +22,7 @@ public class ImageFileService {
 
     private final S3Uploader s3Uploader;
 
-    public ImageFile saveFile(MultipartFile multipartFile) throws IOException {
+    public ImageFile uploadFile(MultipartFile multipartFile) throws IOException {
         String originalFileName = multipartFile.getOriginalFilename();
 
 //        int extensionIdx = multipartFile.getOriginalFilename().lastIndexOf(".");

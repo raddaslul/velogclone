@@ -9,6 +9,7 @@ import com.sparta.velogclone.handler.ex.IllegalPostDeleteUserException;
 import com.sparta.velogclone.handler.ex.IllegalPostUpdateUserException;
 import com.sparta.velogclone.handler.ex.PostNotFoundException;
 import com.sparta.velogclone.repository.CommentRepository;
+import com.sparta.velogclone.repository.ImageFileRepository;
 import com.sparta.velogclone.repository.LikesRepository;
 import com.sparta.velogclone.repository.PostRepository;
 import com.sparta.velogclone.util.S3Uploader;
@@ -29,6 +30,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final ImageFileRepository imageFileRepository;
     private final LikesRepository likesRepository;
     private final ImageFileService imageFileService;
 
@@ -36,12 +38,12 @@ public class PostService {
     private final String imageDirName = "image";
 
     // 게시글 작성
-    public ImageFile savePost(
-            MultipartFile multipartFile, PostRequestDto postRequestDto, User user) throws IOException {
+    public ImageFile savePost(PostRequestDto postRequestDto, User user, Long imageId) {
             Post post = new Post(postRequestDto, user);
             postRepository.save(post);
 
-            ImageFile imageFile = imageFileService.saveFile(multipartFile);
+            ImageFile imageFile = imageFileRepository.findById(imageId)
+                    .orElseThrow(IllegalArgumentException::new);
 
             postRequestDto.setImageFile(imageFile);
             imageFile.addPost(post);
@@ -116,9 +118,10 @@ public class PostService {
                 .orElseThrow(() -> new PostNotFoundException("해당 게시글이 존재하지 않습니다."));
         if(user.getId().equals(post.getUser().getId())) {
             String deleteFileURL = imageDirName + "/" + post.getImageFile().getConvertedFileName();
+            System.out.println("삭제" + deleteFileURL);
             s3Uploader.deleteFile(deleteFileURL);
             post.updatePost(postRequestDto);
-            ImageFile imageFile = imageFileService.saveFile(multipartFile);
+            ImageFile imageFile = imageFileService.uploadFile(multipartFile);
             postRequestDto.setImageFile(imageFile);
             imageFile.addPost(post);
         } else throw new IllegalPostUpdateUserException("사용자가 작성한 게시글이 아닙니다.");
