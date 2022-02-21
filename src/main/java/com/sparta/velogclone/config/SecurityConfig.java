@@ -64,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("https://raddaslul.s3.ap-northeast-2.amazonaws.com/");
 //        configuration.addAllowedOrigin("http://ricefriend-bucket.s3-website.ap-northeast-2.amazonaws.com/");
 //        configuration.addAllowedOrigin("http://ricefriend.s3-website.ap-northeast-2.amazonaws.com/");
         configuration.addAllowedMethod("*");
