@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.JoinColumn;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +50,7 @@ public class PostController {
     @ApiOperation(value = "게시물 등록", notes = "게시물에 이미지 파일을 첨부해서 등록한다")
     public String savePost(
             @PathVariable Long imageId,
-            @RequestPart("post") PostRequestDto postRequestDto,
+            @RequestBody PostRequestDto postRequestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         if(userDetails != null) {

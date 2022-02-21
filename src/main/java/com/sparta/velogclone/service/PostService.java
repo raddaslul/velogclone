@@ -45,7 +45,7 @@ public class PostService {
             ImageFile imageFile = imageFileRepository.findById(imageId)
                     .orElseThrow(IllegalArgumentException::new);
 
-            postRequestDto.setImageFile(imageFile);
+            post.setImageFile(imageFile);
             imageFile.addPost(post);
             return imageFile;
     }
