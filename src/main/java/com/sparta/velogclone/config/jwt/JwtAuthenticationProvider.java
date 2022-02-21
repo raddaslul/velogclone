@@ -26,6 +26,7 @@ public class JwtAuthenticationProvider {
 
     // JWT 토큰 생성
     public String createToken(String userPk, String userEmail) {
+        // 비공개 클레임을 payload 정보에 저장
         Claims claims = Jwts.claims().setSubject(userPk); // payload에  정보 저장
         claims.put("username", userPk); // 정보를 저장할 데이터 넣어주기
         claims.put("userEmail",userEmail);

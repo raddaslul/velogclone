@@ -21,10 +21,17 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/user/signup")
+    /*@PostMapping("/user/signup")
     @ApiOperation(value = "회원가입", hidden = true)
     public ResponseEntity<CMResponseDto> signup(@RequestBody @Valid SignupRequestDto requestDto) {
         return userService.signup(requestDto);
+    }*/
+
+    @PostMapping("/user/signup")
+    @ApiOperation(value = "회원가입", hidden = true)
+    public ResponseEntity<LoginResponseDto> signup(@RequestBody @Valid SignupRequestDto requestDto,
+                                                   HttpServletResponse response) {
+        return userService.signup(requestDto, response);
     }
 
     @PostMapping("/user/login")

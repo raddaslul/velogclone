@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
-    public ResponseEntity<CMResponseDto> signup(SignupRequestDto requestDto) {
+    public ResponseEntity<LoginResponseDto> signup(SignupRequestDto requestDto, HttpServletResponse response) {
 
         String email = requestDto.getUserEmail(); // 아이디
         String rawPassword = requestDto.getPassword();
@@ -54,7 +55,9 @@ public class UserService {
         // user 저장
         userRepository.save(user);
 
-        return ResponseEntity.ok(new CMResponseDto("true"));
+        LoginRequestDto loginRequestDto = new LoginRequestDto(email, rawPassword);
+        return login(loginRequestDto, response);
+        //return ResponseEntity.ok(new CMResponseDto("true"));
     }
 
     public ResponseEntity<LoginResponseDto> login(LoginRequestDto requestDto, HttpServletResponse response) {

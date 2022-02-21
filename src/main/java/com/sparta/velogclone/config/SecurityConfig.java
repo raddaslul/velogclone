@@ -57,7 +57,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(new JwtAuthenticationFilter(jwtAuthenticationProvider),
                         UsernamePasswordAuthenticationFilter.class);
 
-
     }
 
     @Bean
