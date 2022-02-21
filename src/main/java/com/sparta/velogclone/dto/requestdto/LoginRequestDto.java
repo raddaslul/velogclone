@@ -20,8 +20,12 @@ public class LoginRequestDto {
     @ApiModelProperty(value = "비밀번호")
     private String password;
 
-    public LoginRequestDto (String userEmail, String password){
+    @ApiModelProperty(value = "유저 이름")
+    private String userName;
+
+    public LoginRequestDto (String userEmail, String password, String userName){
         this.userEmail = userEmail;
         this.password = password;
+        this.userName = userName;
     }
 }

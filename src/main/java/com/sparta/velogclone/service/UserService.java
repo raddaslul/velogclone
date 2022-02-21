@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RequiredArgsConstructor
@@ -30,6 +29,7 @@ public class UserService {
         String email = requestDto.getUserEmail(); // 아이디
         String rawPassword = requestDto.getPassword();
         String pwCheck = requestDto.getPasswordCheck();
+        String userName = requestDto.getUserName();
 
         // 유효성 체크
         if (!isPasswordMatched(email, rawPassword))
@@ -55,7 +55,7 @@ public class UserService {
         // user 저장
         userRepository.save(user);
 
-        LoginRequestDto loginRequestDto = new LoginRequestDto(email, rawPassword);
+        LoginRequestDto loginRequestDto = new LoginRequestDto(email, rawPassword, userName);
         return login(loginRequestDto, response);
         //return ResponseEntity.ok(new CMResponseDto("true"));
     }
@@ -80,7 +80,12 @@ public class UserService {
         cookie.setSecure(true);
         response.addCookie(cookie);
 
-        return ResponseEntity.ok(new LoginResponseDto(token, "true"));
+        //Optional<User> user = userRepository.findByUserEmail(requestDto.getUserEmail());
+        User user = userRepository.findByUserEmail(requestDto.getUserEmail()).orElseThrow(
+                () -> new EmailNotFoundException("가입되지 않은 이메일입니다.")
+        );
+
+        return ResponseEntity.ok(new LoginResponseDto(token, requestDto.getUserEmail(), user.getUserName() ,"true"));
     }
 
     private boolean isDuplicatePassword(String rawPassword, String pwCheck) {
