@@ -1,6 +1,5 @@
 package com.sparta.velogclone.dto.requestdto;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
@@ -8,5 +7,5 @@ import lombok.Getter;
 @Getter
 public class SearchRequestDto {
 
-    private String SearchWord;
+    private String search;
 }

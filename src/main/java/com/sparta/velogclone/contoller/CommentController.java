@@ -26,7 +26,7 @@ public class CommentController {
         HashMap<String, Object> result = new HashMap<>();
 
         commentService.writeComment(commentRequestDto, userDetails);
-        result.put("result", true);
+        result.put("result", "true");
 
         return result;
     }
@@ -39,7 +39,7 @@ public class CommentController {
         HashMap<String, Object> result = new HashMap<>();
 
         commentService.changeComment(commentId, commentRequestDto, userDetails);
-        result.put("result", true);
+        result.put("result", "true");
 
         return result;
     }
@@ -51,7 +51,7 @@ public class CommentController {
         HashMap<String, Object> result = new HashMap<>();
 
         commentService.deleteComment(commentId, userDetails);
-        result.put("result", true);
+        result.put("result", "true");
 
         return result;
     }
