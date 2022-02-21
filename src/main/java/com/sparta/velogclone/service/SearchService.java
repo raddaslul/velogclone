@@ -31,7 +31,7 @@ public class SearchService {
         Specification<Post> spec = Specification.where(PostSpecification.equalTitle(searchRequestDto.getSearch()));
         if(searchRequestDto.getSearch() != null) {
             spec = spec.and(PostSpecification.equalTitle(searchRequestDto.getSearch()));
-            spec = spec.or(PostSpecification.equalTitle(searchRequestDto.getSearch()));
+            spec = spec.or(PostSpecification.equalContent(searchRequestDto.getSearch()));
         }
         List<Post> posts = postRepository.findAll(spec);
 
