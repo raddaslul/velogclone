@@ -1,8 +1,8 @@
 cloud:
   aws:
     credentials:
-      accessKey:
-      secretKey:
+#      accessKey:
+#      secretKey:
     s3:
       bucket: raddaslul
     region:
