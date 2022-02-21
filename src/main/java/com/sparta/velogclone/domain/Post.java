@@ -23,11 +23,11 @@ public class Post extends Timestamped {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "title", nullable = true)
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Lob
-    @Column(name = "content", nullable = true)
+    @Column(name = "content", nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,7 +41,8 @@ public class Post extends Timestamped {
     @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<Likes> likeses = new ArrayList<>();
 
-    @OneToOne(mappedBy = "post", orphanRemoval = true)
+    @OneToOne
+    @JoinColumn(name = "imageFile_id")
     private ImageFile imageFile;
 
     public Post(PostRequestDto postRequestDto, User user) {

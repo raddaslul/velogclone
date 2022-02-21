@@ -2,22 +2,24 @@ package com.sparta.velogclone.contoller;
 
 import com.sparta.velogclone.config.auth.UserDetailsImpl;
 import com.sparta.velogclone.domain.ImageFile;
+import com.sparta.velogclone.domain.Post;
 import com.sparta.velogclone.domain.User;
 import com.sparta.velogclone.dto.requestdto.PostRequestDto;
+import com.sparta.velogclone.dto.responsedto.ImageFileResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostDetailResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostResponseDto;
 import com.sparta.velogclone.handler.ex.LoginUserNotFoundException;
+import com.sparta.velogclone.service.ImageFileService;
 import com.sparta.velogclone.service.PostService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.JoinColumn;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -29,21 +31,33 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final ImageFileService imageFileService;
+
+    // 이미지 업로드
+    @PostMapping("/api/upload")
+    @ApiOperation(value = "이미지 업로드", notes = "게시글 등록 할 때 이미지 업로드")
+    public ImageFileResponseDto uploadImage(
+            @RequestPart("imageFile")MultipartFile multipartFile,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) throws IOException {
+        if(userDetails != null) {
+            ImageFile imageFile = imageFileService.uploadFile(multipartFile);
+            return new ImageFileResponseDto(imageFile.getFilePath(), imageFile.getId());
+        }   else throw new LoginUserNotFoundException("로그인한 유저 정보가 없습니다.");
+    }
 
     // 게시글 작성
-    @PostMapping("/api/posting")
+    @PostMapping("/api/posting/{imageId}")
     @ApiOperation(value = "게시물 등록", notes = "게시물에 이미지 파일을 첨부해서 등록한다")
     public String savePost(
-            @RequestPart("imageFile") MultipartFile multipartFile,
+            @PathVariable Long imageId,
             @RequestPart("post") PostRequestDto postRequestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
-            ) throws IOException {
+    ) {
         if(userDetails != null) {
             User user = userDetails.getUser();
-            ImageFile imageFile = postService.savePost(multipartFile, postRequestDto, user);
-            String filePath = imageFile.getFilePath();
-            return filePath;
-            //return new UrlResource(filePath);
+            ImageFile imageFile = postService.savePost(postRequestDto, user, imageId);
+            return imageFile.getFilePath();
         } else throw new LoginUserNotFoundException("로그인한 유저 정보가 없습니다.");
     }
 
