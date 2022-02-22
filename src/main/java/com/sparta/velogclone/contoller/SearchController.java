@@ -20,7 +20,7 @@ public class SearchController {
         this.searchService = searchService;
     }
 
-    @GetMapping("/search")
+    @GetMapping("/api/search")
     public List<PostResponseDto> searchPost(@RequestBody SearchRequestDto searchRequestDto) {
         return searchService.searchPost(searchRequestDto);
     }
