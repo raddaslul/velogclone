@@ -27,14 +27,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorResponse("U003", e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(DuplicationUserNameException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateUserNameException(DuplicationUserNameException e) {
+        return new ResponseEntity<>(new ErrorResponse("U004", e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(PasswordNotCollectException.class)
     public ResponseEntity<ErrorResponse> handlePasswordNotCollectException(PasswordNotCollectException e) {
-        return new ResponseEntity<>(new ErrorResponse("U004", e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse("U005", e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(LoginUserNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleLoginUserNotFoundException(LoginUserNotFoundException e) {
-        return new ResponseEntity<>(new ErrorResponse("U005", e.getMessage()), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(new ErrorResponse("U006", e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(PostNotFoundException.class)

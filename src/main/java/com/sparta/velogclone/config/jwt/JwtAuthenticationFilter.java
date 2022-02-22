@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request, response);    // 검증을 함
 
         ///////////////////   JWT 토큰 인증방식 순서   ///////////////////
         // 0. 서버가 클라이언트에게 JWT 발급해줌 -> 유저이름, 이메일, 토큰생성시간, 만료시간 등의 정보 포함.
@@ -41,7 +41,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // ==== UserDetailsImpl에 담기게 됨!!!
         // 5. response 결과로 클라이언트가 요청한 부분을 처리해서 그 결과를 보내줌.
 
-        // 에러 메세지 줄 때 상태 코드 구체적으로 정해서 줘야할듯!!!!!!! 그게 프론트한테 더 좋을듯
-        //
+        // 에러 메세지 줄 때 상태 코드 구체적으로 정해서 줘야 그게 프론트한테 더 좋을듯 하다
     }
 }

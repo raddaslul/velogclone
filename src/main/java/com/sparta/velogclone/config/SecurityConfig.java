@@ -69,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.addExposedHeader("*");
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(true); // 클라이언트의 쿠키를 전달하고 받을 것이기 때문에 allowCredentials를 true로 설정한다.
         configuration.validateAllowCredentials();
         configuration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

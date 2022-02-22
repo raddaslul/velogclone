@@ -20,13 +20,14 @@ public class JwtAuthenticationProvider {
 
     private String secretKey = "sparta";
 
-    private Long tokenValidTime = 1000L * 60 * 60; // 1시간
+    private Long tokenValidTime = 1000L * 60 * 120; // 1시간
 
     private final UserDetailsImplService userDetailsImplService;
 
     // JWT 토큰 생성
     public String createToken(String userPk, String userEmail) {
-        // 비공개 클레임을 payload 정보에 저장
+        // 비공개 클레임(사용자가 정의한 클레임으로 서버와 클라이언트 사이에 임의로 지정한 정보)을 payload 정보에 저장
+        // payload 에는 토큰에 담을 Claim 정보를 포함하고 있다.
         Claims claims = Jwts.claims().setSubject(userPk); // payload에  정보 저장
         claims.put("username", userPk); // 정보를 저장할 데이터 넣어주기
         claims.put("userEmail",userEmail);
@@ -37,6 +38,7 @@ public class JwtAuthenticationProvider {
                 .setIssuedAt(now) // 토큰 발행 시간 정보
                 .setExpiration(new Date(now.getTime() + tokenValidTime))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
+                //.setAudience("bob")   // 이런식으로 등록된 claim 사용가능
                 // 사용할 암호화 알고리즘 및 signature에 들어갈 secretKey 값 설정
                 .compact();
     }
@@ -52,7 +54,7 @@ public class JwtAuthenticationProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    // Request의 Header에서 token 값을 가져옵니다. "Authorization" : "TOKEN값"
+    // Request의 Header에서 token 값을 가져온다. 헤더에 "Authorization" : "TOKEN값" 형식으로 있다.
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader("Authorization");
     }

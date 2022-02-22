@@ -38,6 +38,9 @@ public class UserService {
         if (!isExistEmail(email))
             throw new DuplicateEmailException("이미 존재하는 아이디 입니다.");
 
+        if (!isExistUserName(userName))
+            throw new DuplicationUserNameException("이미 존재하는 유저 네임 입니다.");
+
         if (!isDuplicatePassword(rawPassword, pwCheck)) {
             throw new PasswordNotCollectException();
         }
@@ -94,6 +97,10 @@ public class UserService {
 
     public boolean isExistEmail(String userEmail) {
         return !userRepository.findByUserEmail(userEmail).isPresent();
+    }
+
+    public boolean isExistUserName(String userName) {
+        return !userRepository.findByUserName(userName).isPresent();
     }
 
     private boolean isPasswordMatched(String email, String rawPassword) {
