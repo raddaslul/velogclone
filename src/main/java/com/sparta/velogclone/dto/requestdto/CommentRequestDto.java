@@ -3,15 +3,15 @@ package com.sparta.velogclone.dto.requestdto;
 import com.sparta.velogclone.domain.Comment;
 import com.sparta.velogclone.domain.Post;
 import com.sparta.velogclone.domain.User;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import java.io.Serializable;
 
 @Data
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommentRequestDto {
     private String comment;
     private Long postId;

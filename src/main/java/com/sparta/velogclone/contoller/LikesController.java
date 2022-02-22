@@ -20,7 +20,7 @@ public class LikesController {
         this.likesService = likesService;
     }
 
-    @PostMapping("/likes/{postId}")
+    @PostMapping("/api/likes/{postId}")
     public ResponseEntity<?> addLikes(@PathVariable Long postId) {
         return likesService.addLikes(postId);
     }
