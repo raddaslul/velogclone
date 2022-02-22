@@ -4,9 +4,7 @@ import com.sparta.velogclone.domain.Post;
 import com.sparta.velogclone.dto.requestdto.SearchRequestDto;
 import com.sparta.velogclone.dto.responsedto.PostResponseDto;
 import com.sparta.velogclone.repository.PostRepository;
-import com.sparta.velogclone.specification.PostSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

@@ -87,7 +87,7 @@ public class PostService {
             String commentModifiedAt = commentResponseDto.getCommentModifiedAt();
             String year = commentModifiedAt.substring(0,4) + "년";
             String month = commentModifiedAt.substring(5,7) + "월";
-            String day = commentModifiedAt.substring(8) + "일";
+            String day = commentModifiedAt.substring(8, 10) + "일";
             String time = commentModifiedAt.substring(11,19);
             commentModifiedAt = year + month + day + time;
             commentResponseDto.setCommentModifiedAt(commentModifiedAt);
