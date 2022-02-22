@@ -12,16 +12,17 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class Scheduler {
-    
+
     public final ImageFileRepository imageFileRepository;
     public final S3Uploader s3Uploader;
-    
-    @Scheduled(cron = "0 30 21 0 * *")
+    private final String imageDirName = "image";
+
+    @Scheduled(cron = "0 30 22 * * *")
     public void deleteImage() {
         List<ImageFile> imageFileList = imageFileRepository.findAll();
         for (ImageFile imageFile : imageFileList) {
             if(imageFile.getPost() == null) {
-                String deleteFileURL = imageFile.getFilePath();
+                String deleteFileURL = imageDirName + "/" + imageFile.getConvertedFileName();
                 s3Uploader.deleteFile(deleteFileURL);
                 imageFileRepository.delete(imageFile);
             }
