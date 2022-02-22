@@ -16,7 +16,7 @@ public class Scheduler {
     public final ImageFileRepository imageFileRepository;
     public final S3Uploader s3Uploader;
     
-    @Scheduled(cron = "0 0 0 0/1 * *")
+    @Scheduled(cron = "0 30 21 0 * *")
     public void deleteImage() {
         List<ImageFile> imageFileList = imageFileRepository.findAll();
         for (ImageFile imageFile : imageFileList) {
