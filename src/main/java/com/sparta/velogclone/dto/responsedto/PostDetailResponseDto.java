@@ -21,6 +21,7 @@ public class PostDetailResponseDto {
     private int commentCnt;
     private int likeCnt;
     private String postUserName;
+    private String postUserEmail;
     private List<CommentResponseDto> commentList;
 
     public PostDetailResponseDto (
@@ -37,6 +38,7 @@ public class PostDetailResponseDto {
         this.commentCnt = commentCnt;
         this.likeCnt = likeCnt;
         this.postUserName = post.getUser().getUserName();
+        this.postUserEmail = post.getUser().getUserEmail();
         this.commentList = commentList;
     }
 }
