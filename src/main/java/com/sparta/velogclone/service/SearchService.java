@@ -26,20 +26,20 @@ public class SearchService {
     @Transactional
     public List<PostResponseDto> searchPost(SearchRequestDto searchRequestDto) {
 
-//        List<Post> posts = postRepository.findAllByTitleContainingIgnoreCase(searchRequestDto.getSearchWord());
+        List<Post> posts = postRepository.findAllByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(searchRequestDto.getSearch(), searchRequestDto.getSearch());
 
-        Specification<Post> spec = Specification.where(PostSpecification.equalTitle(searchRequestDto.getSearch()));
-        if(searchRequestDto.getSearch() != null) {
-            spec = spec.and(PostSpecification.equalTitle(searchRequestDto.getSearch()));
-            spec = spec.or(PostSpecification.equalContent(searchRequestDto.getSearch()));
-        }
-        List<Post> posts = postRepository.findAll(spec);
-
+//        Specification<Post> spec = Specification.where(PostSpecification.equalTitle(searchRequestDto.getSearch()));
+//        if(searchRequestDto.getSearch() != null) {
+//            spec = spec.and(PostSpecification.equalTitle(searchRequestDto.getSearch()));
+//            spec = spec.or(PostSpecification.equalContent(searchRequestDto.getSearch()));
+//        }
+//        List<Post> posts = postRepository.findAll(spec);
+//
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();
-
-        if (posts.isEmpty()) {
-            return postResponseDtoList;
-        }
+//
+//        if (posts.isEmpty()) {
+//            return postResponseDtoList;
+//        }
 
         for (Post post : posts) {
             String postModifiedAt = post.getModifiedAt().toString();
