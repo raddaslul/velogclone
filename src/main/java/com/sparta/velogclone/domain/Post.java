@@ -1,7 +1,6 @@
 package com.sparta.velogclone.domain;
 
 import com.sparta.velogclone.dto.requestdto.PostRequestDto;
-import com.sparta.velogclone.dto.responsedto.PostResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
