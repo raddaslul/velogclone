@@ -40,8 +40,7 @@ public class Post extends Timestamped {
     @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<Likes> likeses = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name = "imageFile_id")
+    @OneToOne(mappedBy = "post", orphanRemoval = true)
     private ImageFile imageFile;
 
     public Post(PostRequestDto postRequestDto, User user) {

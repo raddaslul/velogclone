@@ -28,7 +28,8 @@ public class ImageFile extends Timestamped {
     @Column(name = "file_size", nullable = false)
     private Long fileSize;
 
-    @OneToOne(mappedBy = "imageFile", orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
     private Post post;
 
     public void addPost(Post post) {
