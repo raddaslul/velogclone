@@ -4,6 +4,7 @@ import com.sparta.velogclone.config.auth.UserDetailsImpl;
 import com.sparta.velogclone.domain.ImageFile;
 import com.sparta.velogclone.domain.Post;
 import com.sparta.velogclone.domain.User;
+import com.sparta.velogclone.dto.requestdto.ImageIdRequestDto;
 import com.sparta.velogclone.dto.requestdto.PostRequestDto;
 import com.sparta.velogclone.dto.responsedto.ImageFileResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostDetailResponseDto;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,17 +48,21 @@ public class PostController {
     }
 
     // 게시글 작성
-    @PostMapping("/api/posting/{imageId}")
+    @PostMapping("/api/posting")
     @ApiOperation(value = "게시물 등록", notes = "게시물에 이미지 파일을 첨부해서 등록한다")
-    public String savePost(
-            @PathVariable Long imageId,
+    public List<String> savePost(
             @RequestBody PostRequestDto postRequestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         if(userDetails != null) {
+            List<String> filePathList = new ArrayList<>();
             User user = userDetails.getUser();
-            ImageFile imageFile = postService.savePost(postRequestDto, user, imageId);
-            return imageFile.getFilePath();
+            List<ImageFile> imageFileList = postService.savePost(postRequestDto, user);
+            String filePath;
+            for (ImageFile imageFile : imageFileList) {
+                 filePath = imageFile.getFilePath();
+                 filePathList.add(filePath);
+            } return filePathList;
         } else throw new LoginUserNotFoundException("로그인한 유저 정보가 없습니다.");
     }
 
@@ -76,17 +82,13 @@ public class PostController {
 
     // 게시글 수정
     @PutMapping("/api/posting/{postId}")
-    public HashMap<String, Object> updatePost(
+    public List<Long> updatePost(
             @PathVariable Long postId,
-            @RequestPart("imageFile") MultipartFile multipartFile,
-            @RequestPart("post") PostRequestDto postRequestDto,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+            @RequestBody PostRequestDto postRequestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if(userDetails != null) {
             User user = userDetails.getUser();
-            postService.updatePost(postId, user, multipartFile, postRequestDto);
-            HashMap<String, Object> result = new HashMap<>();
-            result.put("result", "true");
-            return result;
+            return postService.updatePost(postId, user, postRequestDto);
         } else throw new LoginUserNotFoundException("로그인한 유저 정보가 없습니다.");
     }
 

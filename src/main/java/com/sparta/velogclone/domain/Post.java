@@ -1,10 +1,7 @@
 package com.sparta.velogclone.domain;
 
 import com.sparta.velogclone.dto.requestdto.PostRequestDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -40,8 +37,8 @@ public class Post extends Timestamped {
     @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<Likes> likeses = new ArrayList<>();
 
-    @OneToOne(mappedBy = "post", orphanRemoval = true)
-    private ImageFile imageFile;
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
+    private List<ImageFile> imageFileList = new ArrayList<>();
 
     public Post(PostRequestDto postRequestDto, User user) {
         this.title = postRequestDto.getTitle();
@@ -52,10 +49,10 @@ public class Post extends Timestamped {
     public void updatePost(PostRequestDto postRequestDto) {
         this.title = postRequestDto.getTitle();
         this.content = postRequestDto.getTitle();
-        this.imageFile = postRequestDto.getImageFile();
+        this.imageFileList = postRequestDto.getImageFileList();
     }
 
-    public void setImageFile(ImageFile imageFile) {
-        this.imageFile = imageFile;
+    public void setImageFileList(List<ImageFile> imageFileList) {
+        this.imageFileList = imageFileList;
     }
 }

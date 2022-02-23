@@ -28,7 +28,7 @@ public class ImageFile extends Timestamped {
     @Column(name = "file_size", nullable = false)
     private Long fileSize;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 
@@ -41,5 +41,9 @@ public class ImageFile extends Timestamped {
         this.convertedFileName = imageFileRequestDto.getConvertedFileName();
         this.filePath = imageFileRequestDto.getFilePath();
         this.fileSize = imageFileRequestDto.getFileSize();
+    }
+
+    public void clear() {
+        this.post = null;
     }
 }

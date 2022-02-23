@@ -1,6 +1,7 @@
 package com.sparta.velogclone.service;
 
 import com.sparta.velogclone.domain.*;
+import com.sparta.velogclone.dto.requestdto.ImageIdRequestDto;
 import com.sparta.velogclone.dto.requestdto.PostRequestDto;
 import com.sparta.velogclone.dto.responsedto.CommentResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostDetailResponseDto;
@@ -16,9 +17,7 @@ import com.sparta.velogclone.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,22 +31,23 @@ public class PostService {
     private final CommentRepository commentRepository;
     private final ImageFileRepository imageFileRepository;
     private final LikesRepository likesRepository;
-    private final ImageFileService imageFileService;
 
     private final S3Uploader s3Uploader;
     private final String imageDirName = "image";
 
     // 게시글 작성
-    public ImageFile savePost(PostRequestDto postRequestDto, User user, Long imageId) {
+    public List<ImageFile> savePost(PostRequestDto postRequestDto, User user) {
             Post post = new Post(postRequestDto, user);
-            postRepository.save(post);
-
-            ImageFile imageFile = imageFileRepository.findById(imageId)
+            post = postRepository.save(post);
+            List<ImageFile> imageFileList = new ArrayList<>();
+            List<ImageIdRequestDto> imageIdRequestDtoList = postRequestDto.getImageIdList();
+        for (ImageIdRequestDto imageIdRequestDto : imageIdRequestDtoList) {
+            ImageFile imageFile = imageFileRepository.findById(imageIdRequestDto.getImageId())
                     .orElseThrow(IllegalArgumentException::new);
-
-            post.setImageFile(imageFile);
             imageFile.addPost(post);
-            return imageFile;
+            imageFileList.add(imageFile);
+        } post.setImageFileList(imageFileList);
+        return imageFileList;
     }
 
     // 게시글 전체 조회
@@ -109,21 +109,26 @@ public class PostService {
     }
 
     // 게시글 수정
-    public void updatePost(
+    public List<Long> updatePost(
             Long postId, User user,
-            MultipartFile multipartFile,
             PostRequestDto postRequestDto
-        ) throws IOException {
+        ){
+        List<Long> imageIdList;
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("해당 게시글이 존재하지 않습니다."));
         if(user.getId().equals(post.getUser().getId())) {
-            String deleteFileURL = imageDirName + "/" + post.getImageFile().getConvertedFileName();
-            System.out.println("삭제" + deleteFileURL);
-            s3Uploader.deleteFile(deleteFileURL);
+            List<ImageIdRequestDto> imageIdRequestDtoList = postRequestDto.getImageIdList();
+            List<ImageFile> imageFileList = new ArrayList<>();
+            for (ImageIdRequestDto imageIdRequestDto : imageIdRequestDtoList) {
+                ImageFile imageFile = imageFileRepository.findById(imageIdRequestDto.getImageId())
+                        .orElseThrow(IllegalArgumentException::new);
+                imageFileList.add(imageFile);
+                postRequestDto.setImageFileList(imageFileList);
+            }
+            post.getImageFileList().clear();
             post.updatePost(postRequestDto);
-            ImageFile imageFile = imageFileService.uploadFile(multipartFile);
-            postRequestDto.setImageFile(imageFile);
-            imageFile.addPost(post);
+            imageIdList = post.getImageFileList().stream().map(ImageFile::getId).collect(Collectors.toList());
+            return imageIdList;
         } else throw new IllegalPostUpdateUserException("사용자가 작성한 게시글이 아닙니다.");
     }
 
@@ -132,9 +137,12 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("해당 게시글이 존재하지 않습니다."));
         if(user.getId().equals(post.getUser().getId())) {
-            String deleteFileURL = imageDirName + "/" + post.getImageFile().getConvertedFileName();
-            s3Uploader.deleteFile(deleteFileURL);
-            postRepository.deleteById(postId);
+            List<ImageFile> imageFileList = imageFileRepository.findAllByPostId(postId);
+            for (ImageFile imageFile : imageFileList) {
+                String deleteFileURL = imageDirName + "/" + imageFile.getConvertedFileName();
+                s3Uploader.deleteFile(deleteFileURL);
+                postRepository.deleteById(postId);
+            }
         } else throw new IllegalPostDeleteUserException("사용자가 작성한 게시글이 아닙니다.");
     }
 }
