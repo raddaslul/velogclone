@@ -4,7 +4,6 @@ import com.sparta.velogclone.config.auth.UserDetailsImpl;
 import com.sparta.velogclone.domain.ImageFile;
 import com.sparta.velogclone.domain.User;
 import com.sparta.velogclone.dto.requestdto.PostRequestDto;
-import com.sparta.velogclone.dto.requestdto.PostUpdateRequestDto;
 import com.sparta.velogclone.dto.responsedto.ImageFileResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostDetailResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostResponseDto;
