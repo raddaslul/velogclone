@@ -2,9 +2,9 @@ package com.sparta.velogclone.contoller;
 
 import com.sparta.velogclone.config.auth.UserDetailsImpl;
 import com.sparta.velogclone.domain.ImageFile;
-import com.sparta.velogclone.domain.Post;
 import com.sparta.velogclone.domain.User;
 import com.sparta.velogclone.dto.requestdto.PostRequestDto;
+import com.sparta.velogclone.dto.requestdto.PostUpdateRequestDto;
 import com.sparta.velogclone.dto.responsedto.ImageFileResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostDetailResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostResponseDto;
@@ -78,12 +78,11 @@ public class PostController {
     @PutMapping("/api/posting/{postId}")
     public HashMap<String, Object> updatePost(
             @PathVariable Long postId,
-            @RequestPart("imageFile") MultipartFile multipartFile,
-            @RequestPart("post") PostRequestDto postRequestDto,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+            @RequestBody PostRequestDto postRequestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if(userDetails != null) {
             User user = userDetails.getUser();
-            postService.updatePost(postId, user, multipartFile, postRequestDto);
+            postService.updatePost(postId, user, postRequestDto);
             HashMap<String, Object> result = new HashMap<>();
             result.put("result", "true");
             return result;
