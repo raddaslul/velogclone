@@ -73,15 +73,18 @@ public class UserService {
             throw new PasswordNotCollectException();
 
 
-        // 토큰 정보 생성
+        // 토큰 정보 생성 - 로그인의 response데이터로 돌려줘야한다.
         String token = jwtAuthenticationProvider.createToken(userEntity.getUserName(), userEntity.getUserEmail());
         //response.setHeader("X-AUTH-TOKEN", token);
 
+        // ★ 생성한 토큰을 쿠키에 저장한다.
+        // ( JWT 토큰은 선택에 의해 로컬 스토리지, 세션, 쿠키에 저장하는 방법을 선택한다. )
         Cookie cookie = new Cookie("X-AUTH-TOKEN", token);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         response.addCookie(cookie);
+        // 응답하기 전에 response 정보가 바뀌었으니까 filter가 발동된다.
 
         //Optional<User> user = userRepository.findByUserEmail(requestDto.getUserEmail());
         User user = userRepository.findByUserEmail(requestDto.getUserEmail()).orElseThrow(
