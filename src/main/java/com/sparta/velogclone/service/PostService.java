@@ -2,7 +2,6 @@ package com.sparta.velogclone.service;
 
 import com.sparta.velogclone.domain.*;
 import com.sparta.velogclone.dto.requestdto.PostRequestDto;
-import com.sparta.velogclone.dto.requestdto.PostUpdateRequestDto;
 import com.sparta.velogclone.dto.responsedto.CommentResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostDetailResponseDto;
 import com.sparta.velogclone.dto.responsedto.PostResponseDto;
