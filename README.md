@@ -4,7 +4,7 @@
 
 <br />
 
-##### 노션 뷰 : https://apricot-tarsal-29a.notion.site/4-535a31259dae4ec5bda10de21df55c72
+##### 노션 뷰 : https://www.notion.so/4-Velog-3bc5e5dab9a841259a7041c5c09df5e7
 ##### 프론트 github 주소 : https://github.com/han-woo-jin/VelogClone-FE.git
 ---
 
