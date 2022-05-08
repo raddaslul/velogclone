@@ -4,7 +4,9 @@
 
 <br />
 
+
 ##### 노션 뷰 : https://www.notion.so/4-Velog-3bc5e5dab9a841259a7041c5c09df5e7
+
 ##### 프론트 github 주소 : https://github.com/han-woo-jin/VelogClone-FE.git
 ---
 
@@ -76,6 +78,10 @@
 
 ### 4) 좋아요 기능
 
+- 좋아요 버튼 클릭시 좋아요 숫자가 증가하도록 구현
+
 ### 5) 검색 기능
+
+- 제목, 본문에 검색어가 포함되면 검색되도록 
 
 <br />
